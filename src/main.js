@@ -110,14 +110,14 @@ const createFilterTemplate = () => {
 
 const createBoardTemplate = () => {
   return (
-    `<section class="board container">
+    `<section class="board container js-board">
   <div class="board__filter-list">
     <a href="#" class="board__filter">SORT BY DEFAULT</a>
     <a href="#" class="board__filter">SORT BY DATE up</a>
     <a href="#" class="board__filter">SORT BY DATE down</a>
   </div>
 
-  <div class="board__tasks"></div>
+  <div class="board__tasks js-board__tasks"></div>
   </section>`
   );
 };
@@ -462,14 +462,14 @@ const renderTemplate = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
 
-const siteMainElement = document.querySelector(`.main`);
-const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
+const siteMainElement = document.querySelector(`.js-main`);
+const siteHeaderElement = siteMainElement.querySelector(`.js-main__control`);
 
 renderTemplate(siteHeaderElement, createMainMenuTemplate(), `beforeend`);
 renderTemplate(siteMainElement, createFilterTemplate(), `beforeend`);
 renderTemplate(siteMainElement, createBoardTemplate(), `beforeend`);
 
-const taskListElement = siteMainElement.querySelector(`.board__tasks`);
+const taskListElement = siteMainElement.querySelector(`.js-board__tasks`);
 renderTemplate(taskListElement, createEditTaskTemplate(), `beforeend`);
 
 new Array(TASK_COUNT)
@@ -478,5 +478,5 @@ new Array(TASK_COUNT)
       () => renderTemplate(taskListElement, createTaskTemplate(), `beforeend`)
   );
 
-const boardElement = siteMainElement.querySelector(`.board`);
+const boardElement = siteMainElement.querySelector(`.js-board`);
 renderTemplate(boardElement, createLoadMoreButtonTemplate(), `beforeend`);
