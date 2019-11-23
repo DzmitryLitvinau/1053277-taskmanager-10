@@ -472,11 +472,9 @@ renderTemplate(siteMainElement, createBoardTemplate(), `beforeend`);
 const taskListElement = siteMainElement.querySelector(`.js-board__tasks`);
 renderTemplate(taskListElement, createEditTaskTemplate(), `beforeend`);
 
-new Array(TASK_COUNT)
-  .fill(``)
-  .forEach(
-      () => renderTemplate(taskListElement, createTaskTemplate(), `beforeend`)
-  );
+for (let i = 0; i < TASK_COUNT; i++) {
+  renderTemplate(taskListElement, createTaskTemplate(), `beforeend`);
+}
 
 const boardElement = siteMainElement.querySelector(`.js-board`);
 renderTemplate(boardElement, createLoadMoreButtonTemplate(), `beforeend`);
