@@ -8,3 +8,8 @@ env:
   commonjs: true
 
 extends: 'htmlacademy/es6'
+
+rules:
+  object-curly-spacing:
+    - error
+    - always
