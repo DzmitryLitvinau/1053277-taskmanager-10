@@ -1,11 +1,9 @@
-import { Colors, Days, MonthNames } from '../const.js';
-import { formatTime } from '../util.js';
+import { Colors, Days } from '../const.js';
+import { formatTime, formatDate } from '../util.js';
 
-const createColorsMarkup = (colors, currentColor) => {
-  return colors
-    .map((color) => {
-      return (
-        `<input
+const createColorsTemplate = (colors, currentColor) =>
+  colors.map((color) => `
+        <input
           type="radio"
           id="color-${color}-4"
           class="card__color-input card__color-input--${color} visually-hidden"
@@ -16,19 +14,16 @@ const createColorsMarkup = (colors, currentColor) => {
         <label
           for="color-${color}-4"
           class="card__color card__color--${color}"
-          >${color}</label
-        >`
-      );
-    })
+          >${color}</label>
+  `)
     .join(`\n`);
-};
 
-const createRepeatingDaysMarkup = (days, repeatingDays) => {
-  return days
-    .map((day) => {
-      const isChecked = repeatingDays[day];
-      return (
-        `<input
+
+const createRepeatingDaysTemplate = (days, repeatingDays) =>
+  days.map((day) => {
+    const isChecked = repeatingDays[day];
+    return (
+      `<input
           class="visually-hidden card__repeat-day-input"
           type="checkbox"
           id="repeat-${day}-4"
@@ -37,18 +32,14 @@ const createRepeatingDaysMarkup = (days, repeatingDays) => {
           ${isChecked ? `checked` : ``}
         />
         <label class="card__repeat-day" for="repeat-${day}-4"
-          >${day}</label
-        >`
-      );
-    })
+          >${day}</label>
+      `);
+  })
     .join(`\n`);
-};
 
-const createHashtags = (tags) => {
-  return Array.from(tags)
-    .map((tag) => {
-      return (
-        `<span class="card__hashtag-inner">
+const createHashtags = (tags) =>
+  Array.from(tags).map((tag) => `
+        <span class="card__hashtag-inner">
           <input
             type="hidden"
             name="hashtag"
@@ -64,28 +55,27 @@ const createHashtags = (tags) => {
           >
             delete
           </button>
-        </span>`
-      );
-    })
+        </span>
+        `)
     .join(`\n`);
-};
+
 
 export const createEditTaskTemplate = (task) => {
   const { description, tags, dueDate, color, repeatingDays } = task;
 
   const isExpired = dueDate instanceof Date && dueDate < Date.now();
-  const isDateShowing = !!dueDate;
+  const isDateShowing = Boolean(dueDate);
 
-  const date = isDateShowing ? `${dueDate.getDate()} ${MonthNames[dueDate.getMonth()]}` : ``;
+  const date = isDateShowing ? formatDate(dueDate) : ``;
   const time = isDateShowing ? formatTime(dueDate) : ``;
 
   const isRepeatingTask = Object.values(repeatingDays).some(Boolean);
   const repeatClass = isRepeatingTask ? `card--repeat` : ``;
   const deadlineClass = isExpired ? `card--deadline` : ``;
 
-  const tagsMarkup = createHashtags(tags);
-  const colorsMarkup = createColorsMarkup(Colors, color);
-  const repeatingDaysMarkup = createRepeatingDaysMarkup(Days, repeatingDays);
+  const tagsTemplate = createHashtags(tags);
+  const colorsTemplate = createColorsTemplate(Colors, color);
+  const repeatingDaysTemplate = createRepeatingDaysTemplate(Days, repeatingDays);
 
   return (
     `<article class="card card--edit card--${color} ${repeatClass} ${deadlineClass}">
@@ -138,7 +128,7 @@ export const createEditTaskTemplate = (task) => {
     isRepeatingTask ?
       `<fieldset class="card__repeat-days">
                       <div class="card__repeat-days-inner">
-                        ${repeatingDaysMarkup}
+                        ${repeatingDaysTemplate}
                       </div>
                     </fieldset>`
       : ``
@@ -147,7 +137,7 @@ export const createEditTaskTemplate = (task) => {
 
                 <div class="card__hashtag">
                   <div class="card__hashtag-list">
-                    ${tagsMarkup}
+                    ${tagsTemplate}
                   </div>
 
                   <label>
@@ -164,7 +154,7 @@ export const createEditTaskTemplate = (task) => {
               <div class="card__colors-inner">
                 <h3 class="card__colors-title">Color</h3>
                 <div class="card__colors-wrap">
-                  ${colorsMarkup}
+                  ${colorsTemplate}
                 </div>
               </div>
             </div>

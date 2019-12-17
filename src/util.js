@@ -1,12 +1,8 @@
-const castTimeFormat = (value) => {
-  return value < 10 ? `0${value}` : String(value);
-};
-
 export const formatTime = (date) => {
-  const hours = castTimeFormat(date.getHours() % 12);
-  const minutes = castTimeFormat(date.getMinutes());
-
-  const interval = date.getHours() > 11 ? `pm` : `am`;
-
-  return `${hours}:${minutes} ${interval}`;
+  const time = date.toLocaleString(`en-GB`, { hour: `numeric`, minute: `numeric`, hour12: true });
+  return `${time}`;
 };
+export const formatDate = (date) => `${date.toLocaleString(`en-GB`, { day: `numeric`, month: `long` })}`;
+
+export const isFirst = (index) => index === 0;
+export const take = (array, count, startPos = 0) => array.slice(startPos, startPos + count - 1);
