@@ -4,5 +4,25 @@ export const formatTime = (date) => {
 };
 export const formatDate = (date) => `${date.toLocaleString(`en-GB`, { day: `numeric`, month: `long` })}`;
 
-export const isFirst = (index) => index === 0;
-export const take = (array, count, startPos = 0) => array.slice(startPos, startPos + count - 1);
+export const RenderPosition = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`,
+};
+
+export const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
+};
+
+export const renderTemplate = (container, element, place) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
+  }
+};
