@@ -39,6 +39,14 @@ export default class BoardController {
     this._tasksModel.setFilterChangeHandler(this._onFilterChange);
   }
 
+  hide() {
+    this._container.hide();
+  }
+
+  show() {
+    this._container.show();
+  }
+
   renderTemplate() {
     const tasks = this._tasksModel.getTasks();
     const container = this._container.getElement();
